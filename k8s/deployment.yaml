@@ -24,7 +24,7 @@ spec:
                 values: ["ci"]
       containers:
       - name: app
-        image: skipfish/demo-app:latest
+        image: 172.20.55.169:31500/demo-app:latest
         ports:
         - containerPort: 5000
         resources:

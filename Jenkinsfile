@@ -21,7 +21,7 @@ spec:
   containers:
   - name: kaniko
     image: gcr.m.daocloud.io/kaniko-project/executor:debug
-    imagePullPolicy: Always
+    imagePullPolicy: IfNotPresent
     command: [sleep]
     args: ["99999"]
     volumeMounts:
@@ -29,6 +29,7 @@ spec:
       mountPath: /kaniko/.docker
   - name: kubectl
     image: docker.m.daocloud.io/bitnami/kubectl:latest
+    imagePullPolicy: IfNotPresent
     command: [sleep]
     args: ["99999"]
     securityContext:
@@ -45,7 +46,8 @@ spec:
     }
 
     environment {
-        IMAGE = "skipfish/demo-app"
+        REGISTRY = "172.20.55.169:31500"
+        IMAGE = "172.20.55.169:31500/demo-app"
     }
 
     stages {
@@ -65,8 +67,9 @@ spec:
                           --dockerfile=${WORKSPACE}/Dockerfile \
                           --destination=${IMAGE}:${BUILD_NUMBER} \
                           --destination=${IMAGE}:latest \
-                          --cache=true \
-                          --cache-ttl=24h
+                          --insecure \
+                          --skip-tls-verify \
+                          --cache=false
                     """
                 }
             }

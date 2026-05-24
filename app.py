@@ -16,7 +16,7 @@ def index():
     cost = random.randint(10, 200)
     user = request.args.get('user', 'anonymous')
     logger.info(f"Request processed: method=GET path=/ user={user} cost={cost}ms status=200")
-    return f'Hello from demo-app v1! user={user}\n'
+    return f'Hello from demo-app v2! user={user}\n'
 
 @app.route('/error')
 def error():

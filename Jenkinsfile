@@ -8,6 +8,7 @@ metadata:
   labels:
     jenkins: slave
 spec:
+  serviceAccountName: jenkins
   affinity:
     nodeAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -44,14 +45,14 @@ spec:
     }
 
     environment {
-        IMAGE = "/demo-app"
+        IMAGE = "skipfish/demo-app"
     }
 
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
-                sh 'echo "构建分支: ${BRANCH_NAME:-main}, 构建号: ${BUILD_NUMBER}"'
+                sh 'echo "构建号: ${BUILD_NUMBER}"'
             }
         }
 
@@ -88,7 +89,7 @@ spec:
 
     post {
         success {
-            echo "✅ 部署成功！镜像版本: ${IMAGE}:${BUILD_NUMBER}"
+            echo "✅ 部署成功: ${IMAGE}:${BUILD_NUMBER}"
         }
         failure {
             echo "❌ 部署失败，请检查日志"
